@@ -18,6 +18,14 @@ module OmniAuth
         options[:redirect_uri] || (full_host + script_name + callback_path)
       end
 
+      def request_phase
+        if request.env['omniauth.error.type']
+          redirect options[:redirect_path_on_failure]
+        else
+          super
+        end
+      end
+
       private
 
       def id_info
