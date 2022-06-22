@@ -33,6 +33,15 @@ module OmniAuth
         payload, _header = ::JWT.decode(id_token, nil, false)
         payload
       end
+
+      extra do
+        { 'raw_info' => raw_info }
+      end
+
+      def raw_info
+        whoami_url = "#{session['referrer']}/d2l/api/lp/1.31/users/whoami"
+        @raw_info ||= access_token.get(whoami_url).parsed
+      end
     end
   end
 end
